@@ -3,6 +3,19 @@ class TestData:
     CORRECT_PASSWORD = "12345"
     CORRECT_NAME = "Violetta"
 
+    # Данные для создания курьера (ошибка 400)
+    MISSING_FIELDS_DATA = [
+        {"password": "123", "firstName": "Violetta"}, # Без логина
+        {"login": "Violet_2024", "firstName": "Violetta"}, # Без пароля
+        {"firstName": "Violetta"} # Без обоих
+    ]
+
+    # Данные для логина курьера (пустые поля)
+    LOGIN_MISSING_FIELDS = [
+        {'login': '', 'password': "some_password"},
+        {'login': "some_login", 'password': ''},
+    ]
+
     ORDER_DATA = {
         "firstName": "Nadya",
         "lastName": "Kovaleva",
@@ -14,6 +27,12 @@ class TestData:
         "comment": "Live is life",
         "color": [] 
     }
+    ORDER_COLORS = [
+        ["BLACK"], 
+        ["GREY"], 
+        ["BLACK", "GREY"], 
+        []
+    ]
 
     
     MESSAGE_CONFLICT = {"code": 409, "message": "Этот логин уже используется. Попробуйте другой."}

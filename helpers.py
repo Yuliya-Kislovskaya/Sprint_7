@@ -1,15 +1,14 @@
 import requests
 import random
 import string
+import allure
 from urls import Urls
 
 def register_new_courier_and_return_login_password():
     def generate_random_string(length):
         letters = string.ascii_lowercase
-        random_string = ''.join(random.choice(letters) for i in range(length))
-        return random_string
+        return ''.join(random.choice(letters) for i in range(length))
 
-    login_pass = []
     login = generate_random_string(10)
     password = generate_random_string(10)
     first_name = generate_random_string(10)
@@ -20,11 +19,11 @@ def register_new_courier_and_return_login_password():
         "firstName": first_name
     }
 
-    response = requests.post(Urls.URL_CREATE_COURIER, json=payload)
+    with allure.step('Запрос на создание нового курьера в хелпере'):
+        response = requests.post(Urls.URL_CREATE_COURIER, json=payload)
 
     if response.status_code == 201:
-        login_pass.append(login)
-        login_pass.append(password)
-        login_pass.append(first_name)
+        return [login, password, first_name]
+    
+    return [] 
 
-    return login_pass
