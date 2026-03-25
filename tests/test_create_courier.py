@@ -8,28 +8,12 @@ from http import HTTPStatus
 
 class TestCreateCourier:
 
-    @pytest.fixture
-    def delete_courier(self):
-        couriers_to_clean = []
-        yield couriers_to_clean
-        
-        for courier in couriers_to_clean:
-            with allure.step(f'Логин курьера {courier[0]} для получения id'):
-                login_payload = {"login": courier[0], "password": courier[1]}
-                login_response = requests.post(Urls.URL_LOGIN_COURIER, json=login_payload)
-            
-            if login_response.status_code == HTTPStatus.OK:
-                courier_id = login_response.json().get("id")
-                with allure.step(f'Удаление курьера с id {courier_id}'):
-                     requests.delete(f"{Urls.URL_COURIER_ACTION}{courier_id}")
-
     @allure.title('Успешное создание курьера')
     def test_create_courier_success(self, delete_courier):
         with allure.step('Регистрация нового курьера через хелпер'):
             result = register_new_courier_and_return_login_password()
         
         delete_courier.append([result[0], result[1]])
-        
         assert len(result) == 3
 
     @allure.title('Ошибка при создании дубликата курьера')
